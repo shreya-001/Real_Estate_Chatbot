@@ -1,6 +1,4 @@
-![Binaryhood](Logo/BinaryhoodLogo.png)
-
-# ChatBot
+# RealtyRobo
 
 ## Installation & Setup
 
@@ -39,6 +37,7 @@ Throughout the tutorial, I will provide step-by-step instructions on how to set 
 By the end of this tutorial, you will have a fully functional chatbot that can engage in conversations with users, and you will have gained valuable experience in using Microsoft DialoGPT, Flask, and web development technologies such as HTML, CSS, and JavaScript.
 
 # ChatBot Link
+
 The Chatbot is constructed using the Microsoft/DialoGPT-medium model.
 
 ```
@@ -48,7 +47,7 @@ https://huggingface.co/microsoft/DialoGPT-medium
 # User-Html
 
 ```
-var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + user_input + '<span class="msg_time_send">'+ time + 
+var userHtml = '<div class="d-flex justify-content-end mb-4"><div class="msg_cotainer_send">' + user_input + '<span class="msg_time_send">'+ time +
     '</span></div><div class="img_cont_msg"><img src="https://i.ibb.co/d5b84Xw/Untitled-design.png" class="rounded-circle user_img_msg"></div></div>';
 ```
 
