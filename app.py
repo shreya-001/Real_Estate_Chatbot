@@ -1,8 +1,11 @@
 from flask import Flask,render_template,request,jsonify
-from transformers import AutoModelForCausalLM,AutoTokenizer
+from transformers import AutoModelForCausalLM,AutoTokenizer,BartForConditionalGeneration
 import torch
 import requests
 import nltk
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 
 from nltk.sentiment import SentimentIntensityAnalyzer
 
@@ -61,25 +64,42 @@ def get_Chat_response(text):
         return tokenizer.decode(chat_history_ids[:,bot_input_ids.shape[-1]:][0],skip_special_tokens = True)
 
 
+
+
+
+
+
 def analyze_response(response):
-    
-    # Initialize sentiment analyzer
-    sia = SentimentIntensityAnalyzer()
+  # Sentiment analysis
+  sia = SentimentIntensityAnalyzer()
 
-    # Check for error messages
-    if "sorry" in response.lower() or "unable" in response.lower():
-        return False
+    # Topic modeling
+  vectorizer = TfidfVectorizer()
+  topic_model = MultinomialNB()
 
-    # Analyze sentiment
-    sentiment = sia.polarity_scores(response)
-    if sentiment['compound'] < 0.3:
-        return False
+    # Keyword detection
+  PUNT_KEYWORDS = ["I'm not sure", "I don't have enough information", "That's a great question, but","I'm unable"]
 
-    # Check response format (e.g., text)
-    if not isinstance(response, str):
-        return False
 
-    return True
+  # Sentiment analysis
+  sentiment_score = sia.polarity_scores(response)["compound"]
+  if sentiment_score < 0.0:
+    return False
+
+#   # Topic modeling
+#   query_topic = topic_model.predict(vectorizer.transform([response]))[0]
+#   response_topic = topic_model.predict(vectorizer.transform([response]))[0]
+#   if query_topic != response_topic:
+#     return False
+
+  # Keyword detection
+  for keyword in PUNT_KEYWORDS:
+    if keyword in response:
+      return False
+
+  return True
+
+
 
 def query_google_search_api(query):
     # Set up Google Search API credentials and parameters
@@ -89,17 +109,29 @@ def query_google_search_api(query):
     params = {
     "key": "AIzaSyDC71vdmwP6WWmaIbxQ4YGf90Ydy3EeTPg",
     "cx": "c50cdabe0ed3a48e9",
-    "q": "tell me about current real estate market in toronto",
+    "q": query,
     "fullText": True,
     "maxSnippetLength": 500
     }
 
     response = requests.get(url, params=params)
-    print(response.json())
     # Parse the response and return the top result
     result = response.json()["items"][0]["snippet"]
-    
+    print(result,'before rewriting')
+    result=rewrite_response(result)
+    print(result,'afterrewriting')
     return result
+
+def rewrite_response(response):
+
+    # Load the pre-trained language model
+    model =BartForConditionalGeneration.from_pretrained('facebook/bart-base')
+
+    # Generate a rewritten response with a more conversational tone
+    rewritten_response = rewritten_response = tokenizer.decode(model.generate(tokenizer.encode(response, return_tensors='pt'), max_length=100, temperature=1.5)[0], skip_special_tokens=True)
+
+    print(rewritten_response,'rewritten')
+    return response
 
 if __name__ ==  "__main__":
     app.run(debug=True)
