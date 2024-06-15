@@ -5,6 +5,8 @@ import requests
 import nltk
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.feature_extraction.text import TfidfVectorizer
+import re
+
 
 
 from nltk.sentiment import SentimentIntensityAnalyzer
@@ -126,6 +128,8 @@ def rewrite_response(response):
 
     # Load the pre-trained language model
     model =BartForConditionalGeneration.from_pretrained('facebook/bart-base')
+    date_pattern = r'^\w{3} \d{1,2}, \d{4}'
+    response = re.sub(date_pattern, '', response)
 
     # Generate a rewritten response with a more conversational tone
     rewritten_response = rewritten_response = tokenizer.decode(model.generate(tokenizer.encode(response, return_tensors='pt'), max_length=100, temperature=1.5)[0], skip_special_tokens=True)
