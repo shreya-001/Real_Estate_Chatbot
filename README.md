@@ -1,4 +1,4 @@
-# RealtyRobo
+# RealtyRobo - The Realty Chatbot
 
 ## Installation & Setup
 
