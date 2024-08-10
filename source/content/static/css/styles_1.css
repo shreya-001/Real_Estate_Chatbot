@@ -1,0 +1,425 @@
+/* Hi there */
+
+/* static/css/styles.css */
+/* body {
+}
+
+h1 {
+    color: #333;
+}
+
+a {
+    display: block;
+    margin: 20px 0;
+    text-decoration: none;
+    color: #007BFF; 
+}
+
+a:hover {
+    text-decoration: underline;
+} */
+
+/* changes from here */
+
+html, body {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  
+}
+
+html {
+  font-size: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  html {
+    font-size: 9px;
+  }
+}
+
+body {
+  font-size: 1.6rem;
+  width: 100%;
+  height: 100vh;
+  background-color: #0f1016;
+  position: relative;
+  color: white;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.container {
+  width: 1480px;
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.md_6 {
+  width: 60%;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+.popup {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Black background with opacity */
+  justify-content: center;
+  align-items: center;
+}
+
+.popup .heading_copy {
+  margin-bottom: 6rem;
+  text-align: center;
+}
+
+.popup .heading_copy h2 {
+  font-family: "Kanit", sans-serif;
+  font-size: 2.8rem;
+  margin-bottom: 0;
+}
+
+.popup .heading_copy p {
+  color: #b2b2b2;
+}
+
+.popup-content {
+  background-color: #0f1017;
+  border: 1px solid #424242;
+  padding: 2rem 4rem;
+  border-radius: 1.5rem;
+  width: 430px;
+  max-width: 95%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.popup-content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-content form input {
+  background-color: #1b1c22;
+  border: 1px solid #424242;
+  padding: 2rem;
+  border-radius: 100px;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease-out;
+  font-size: 1.6rem;
+  color: #fff;
+}
+
+.popup-content form input:hover, .popup-content form input:focus {
+  border: 1px solid #8c8c8c;
+}
+
+.popup-content form button {
+  font-size: 1.6rem;
+  font-weight: 600;
+  align-self: center;
+  color: #fff;
+  background-color: #3d1aff;
+  padding: 20px 40px;
+  border-radius: 100px;
+  margin-bottom: 2rem;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+
+.popup-content form button:hover {
+  padding: 20px 50px;
+  box-shadow: 0 0 20px rgba(61, 26, 255, 0.6);
+}
+
+.close, .closeBtn {
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: red;
+}
+
+.closeBtn:hover,
+.closeBtn:focus {
+  color: red;
+}
+
+
+
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  padding: 30px 0px;
+}
+
+header .h_body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header .logo {
+  color: white;
+}
+
+header ul {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+
+header ul li {
+  list-style: none;
+  margin-left: 2rem;
+}
+
+header ul li button {
+  color: white;
+  font-size: 16px;
+  border: none;
+  background: transparent;
+  border-radius: 100px;
+  padding: 20px 40px;
+  cursor: pointer;
+}
+
+header ul li.login button {
+  background: rgba(27, 28, 34, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease-out;
+}
+
+header ul li.login button:hover {
+  background: rgba(27, 28, 34, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hero .hero_block {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.hero h1 {
+  font-family: "Kanit", sans-serif;
+  font-weight: 500;
+  font-size: 5rem;
+  line-height: 1.2;
+  margin: 0 0 3rem;
+  color: white;
+}
+
+.text_color{
+  color: white;
+}
+.hero h1 span {
+  background: linear-gradient(45deg, #f3ec78, #af4261);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero h4{
+  font-size: 2.3rem;
+  margin: 0 0 1rem;
+  color: white;
+}
+
+.hero h3{
+  font-size: 2.3rem;
+  margin: 0 0 1rem;
+  color: white;
+}
+
+.hero p{
+  color: #f8f3f3;
+  margin-right: 35%;
+}
+
+.hero .robo {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -10%;
+  z-index: -1;
+  width: 52.9054054054%;
+}
+
+.chatbot_button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #3d1aff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width 0.3s, background-color 0.3s;
+}
+
+.chatbot_button .icon {
+  pointer-events: none;
+}
+
+.chatbot_button .tooltip {
+  display: none;
+  position: absolute;
+  bottom: 70px;
+  right: 10px;
+  width: 90px;
+  background-color: white;
+  color: #3d1aff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+}
+
+.chatbot_button:hover {
+  background-color: #2a0fbf;
+}
+
+.chatbot_button:hover .tooltip {
+  display: block;
+}
+
+@media only screen and (max-width: 600px) {
+  header {
+    padding: 30px 10px;
+  }
+
+  header ul li {
+    margin-left: 1rem;
+  }
+
+  header ul li button {
+    font-size: 14px;
+    padding: 10px 15px;
+  }
+
+  .hero_block {
+    padding: 20px;
+  }
+
+  .md_6 {
+    width: 100%;
+  }
+
+  .robo {
+    display: none;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */
+
+
+/* Home page css added here */
+.navbar {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+}
+
+.navbar-nav .nav-item .nav-link {
+  color: #000;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+  color: #007bff;
+}
+
+/* changes made  */
+/* .content {
+  margin: 20px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+} */
+
+.chatbot-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: url("https://image.flaticon.com/icons/svg/1041/1041916.svg") no-repeat center center;
+  background-size: cover;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.chatbot-modal {
+  display: none;
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  height: 400px;
+  background: blue;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.chatbot-modal-header {
+  padding: 10px;
+  background: darkblue;
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.chatbot-modal-body {
+  padding: 10px;
+  height: calc(100% - 40px);
+  overflow-y: auto;
+  color: white;
+}
+
+.chatbot-close {
+  float: right;
+  cursor: pointer;
+}
+
+.logout-btn {
+  display: none;
+}
+
+.login-btn {
+  display: none;
+}
