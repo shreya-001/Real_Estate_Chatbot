@@ -1,8 +1,0 @@
-flask
-transformers
-torch
-tensorflow
-pandas
-joblib
-spacy
-scikit-learn
