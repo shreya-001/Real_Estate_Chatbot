@@ -1,0 +1,54 @@
+{% extends 'layouts/default/page.html' %}
+
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block content %}
+    <style>
+        h4, form, ul, li, a, button {
+            color: white !important;
+        }
+    </style>
+    {% csrf_token %}
+    {% if not user.is_authenticated %}
+        <!-- Display login form for unauthenticated users -->
+        <h4>
+            {% if user_type == 'customer' %}
+                {% trans 'Customer Login' %}
+            {% elif user_type == 'realtor' %}
+                {% trans 'Realtor Login' %}
+            {% else %}
+                {% trans 'Log in' %}
+            {% endif %}
+        </h4>
+
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button class="btn btn-primary">{% trans 'Log in' %}</button>
+        </form>
+
+        <hr>
+
+        <ul>
+            <li>
+                <a href="{% url 'accounts:restore_password' %}">{% trans 'Forgot your password?' %}</a>
+            </li>
+            <li>
+                <a href="{% url 'accounts:remind_username' %}">{% trans 'Forgot your username?' %}</a>
+            </li>
+            <li>
+                <a href="{% url 'accounts:resend_activation_code' %}">{% trans 'Resend an activation code' %}</a>
+            </li>
+        </ul>
+    {% else %}
+        <!-- If the user is authenticated, show a welcome message or redirect -->
+        <h4>{% trans 'You are already logged in.' %}</h4>
+        <p>
+            {% if user.is_authenticated %}
+            {% trans "You can log out if you wish to switch accounts." %}
+            <a href="{% url 'log-out' %}">{% trans 'Log out' %}</a>
+            {% endif %}
+        </p>
+    {% endif %}
+{% endblock %}

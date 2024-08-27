@@ -1,0 +1,257 @@
+{% extends 'layouts/default/page.html' %}
+{% load static %}
+
+{% block title %}REALTY ROBO{% endblock %}
+
+{% comment %} {% block extra_css %} {% endcomment %}
+{% block content %}
+<style>
+    {
+        % if user.is_authenticated %
+    }
+
+    .logout-btn {
+        display: inline-block;
+    }
+
+        {
+        % else %
+    }
+
+    .login-btn {
+        display: inline-block;
+    }
+
+        {
+        % endif %
+    }
+</style>
+{% comment %} {% endblock %} {% endcomment %}
+
+{% comment %} {% block content %} {% endcomment %}
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#">Realty Robo</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+        aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <!--<li class="nav-item active">
+                <a class="nav-link" href="{% url 'home1' %}">Home <span class="sr-only">(current)</span></a>
+            </li>-->
+            {% if user.is_authenticated %}
+            <!--<li class="nav-item active">
+                <a class="nav-link" href="{% url 'home1' %}">Dashboard</a>
+            </li>-->
+
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'realtor_login' %}">Realtor</a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'customer_login' %}">Customer</a>
+            </li>
+
+            {% else %}
+
+
+
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'accounts:log_in' %}?user_type=realtor">Realtor Login</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'accounts:log_in' %}?user_type=customer">Customer Login</a>
+            </li>
+            {% endif %}
+
+            <!--<li class="nav-item active">
+                <a class="nav-link" href="{% url 'home1' %}">Customer</a>
+            </li>-->
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            {% csrf_token %}
+            <!--<button class="btn btn-outline-info my-2 my-sm-0" type="button" onclick = "href = {% url 'chat' %}">Chat with Us</button>-->
+
+            <button class="btn btn-outline-info my-2 my-sm-0" type="button">
+                <a href="{% url 'chat' %}">Chat with Us</a>
+            </button>
+            {% if user.is_authenticated %}
+            <a class="btn btn-danger ml-2" href="{% url 'logout' %}">Log out<span class="sr-only">(current)</span></a>
+
+            {% else %}
+
+            <a class="btn btn-primary ml-2" href="{% url 'page' %}">Log in<span class="sr-only">(current)</span></a>
+            {% endif %}
+        </form>
+    </div>
+</nav>
+<!--<body style="background-image: url('{% static "images/hero-bg.png" %}'">-->
+
+<!--<body style="background-image: url('{% static "images/hero-bg.jpg" %}'">-->
+<main role="main">
+
+    <!-- <img src="{% static 'images/real_estate.png' %}" alt="Background Image" class="background-image">-->
+
+    <!-- Main content goes here -->
+    <!-- <h1>Welcome to Your Dream House</h1>-->
+    <section class="container hero">
+        <div class="hero_block">
+            <div class="md_6">
+                {% if user.is_authenticated %}
+                <h3>Hello {{ user.first_name }}</h3>
+                <h4>You're Successfully logged in.</h4>
+                {% endif %}
+
+                <h1>Welcome to <span>REALTY ROBO</span><br>Your Ultimate Real Estate Assistant</h1>
+                <h4>Seamlessly Connect with Your Dream Home or Property Listings</h4>
+                <p>Discover a new way to explore real estate with our intelligent chatbot, REALTY ROBO. Whether you’re a
+                    homebuyer or a realtor, our platform offers seamless assistance <i>24/7</i>.</p>
+
+            </div>
+            <img class="robo" src="{% static 'images/robo.png' %}" alt="Realtor Image">
+        </div>
+
+    </section>
+
+    <!-- Adding login btn for customer in the system -->
+
+    <div id="customerLogin" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <div class="heading_copy">
+                <h2>Customer Login</h2>
+                <p>Find Your Dream Home with Expert Guidance</p>
+            </div>
+            <form>
+                <input type="text" id="username" name="username" placeholder="username" required>
+                <input type="password" id="password" name="password" placeholder="password" required>
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Adding login btn for Realtor in the system 
+<div id="realtorLogin" class="popup">
+    <div class="popup-content">
+        <span class="closeBtn">&times;</span>
+        <div class="heading_copy">
+            <h2>Realtor Login</h2>
+            <p>Access Your Listings and Connect with Potential Buyers</p>
+        </div>
+        <form>
+            <input type="text" id="username" name="username" placeholder="username" required>
+            <input type="password" id="password" name="password" placeholder="password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>-->
+
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <strong>Message: </strong>{{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</main>
+
+<div class="chatbot-icon" onclick="toggleChatbot()">Open</div>
+
+<div class="chatbot-modal" id="chatbotModal">
+    <div class="chatbot-modal-header">
+        <span>Chatbot</span>
+        <span class="chatbot-close" onclick="toggleChatbot()">×</span>
+    </div>
+    <div class="chatbot-modal-body" id="chat-history"></div>
+    <input type="text" id="user-input" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+</div>
+{% endblock %}
+<!--</body>-->
+{% block extra_js %}
+<script>
+
+    //login and signup for customer configuration 
+    $(document).ready(function () {
+        $('#loginBtn').click(function () {
+            $('#customerLogin').css('display', 'flex');
+        });
+
+        $('.close').click(function () {
+            $('#customerLogin').css('display', 'none');
+        });
+
+        $(window).click(function (event) {
+            if ($(event.target).is('#customerLogin')) {
+                $('#customerLogin').css('display', 'none');
+            }
+        });
+    });
+
+    //login and signup for Realtor configuration 
+    $(document).ready(function () {
+        $('#relatorBtn').click(function () {
+            $('#realtorLogin').css('display', 'flex');
+        });
+
+        $('.closeBtn').click(function () {
+            $('#realtorLogin').css('display', 'none');
+        });
+
+        $(window).click(function (event) {
+            if ($(event.target).is('#realtorLogin')) {
+                $('#realtorLogin').css('display', 'none');
+            }
+        });
+    });
+
+
+    //chatbot icon at the bottom of the screen which is right now not visible
+    function toggleChatbot() {
+        var chatbotModal = document.getElementById("chatbotModal");
+        if (chatbotModal.style.display === "none" || chatbotModal.style.display === "") {
+            chatbotModal.style.display = "block";
+        } else {
+            chatbotModal.style.display = "none";
+        }
+    }
+    function appendMessage(message) {
+        var chatHistory = document.getElementById("chat-history");
+        chatHistory.innerHTML += '<div class="message">' + message + "</div>";
+    }
+    function sendMessage() {
+        var userInput = document.getElementById("user-input").value;
+        appendMessage("You: " + userInput);
+        document.getElementById("user-input").value = ""; // Clear input field
+        fetch("/get", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ msg: userInput }),
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                appendMessage("Bot: " + data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+    $(document).ready(function () {
+        $('.logout-btn').click(function () {
+            $(this).hide();
+            $('.login-btn').show();
+        });
+    });
+</script>
+<!--</body>-->
+{% endblock %}

@@ -1,0 +1,301 @@
+{% extends 'layouts/default/page.html' %} {% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Chatbot Integration{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <style>
+        {% block extra_css %}
+        body {
+          background-image: url("{% static 'images/real_estate.png' %}"); /* Replace 'your-image.jpg' with your image file path */
+          background-size: cover; /* Ensures the image covers the entire background */
+          background-position: center; /* Centers the image */
+          background-attachment: fixed; /* Ensures the background image stays fixed as you scroll */
+          margin: 0; /* Removes default margin */
+          padding: 0; /* Removes default padding */
+          height: 100vh; /* Ensures the body takes up the full height of the viewport */
+        }
+
+        /* Style for the navbar */
+        .navbar {
+          background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for the navbar */
+          padding: 10px;
+        }
+
+        .navbar-nav .nav-item .nav-link {
+          color: #000; /* Navbar link color */
+        }
+
+        .navbar-nav .nav-item .nav-link:hover {
+          color: #007bff; /* Navbar link hover color */
+        }
+
+        /* Style for the main content to ensure readability */
+        .content {
+          margin: 20px;
+          padding: 20px;
+          background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+          border-radius: 10px;
+        }
+
+        /* Chatbot icon styles */
+        .chatbot-icon {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          width: 60px;
+          height: 60px;
+          background: url("https://image.flaticon.com/icons/svg/1041/1041916.svg")
+            no-repeat center center;
+          background-size: cover;
+          border-radius: 50%;
+          cursor: pointer;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Chatbot modal styles */
+        .chatbot-modal {
+          display: none;
+          position: fixed;
+          bottom: 90px;
+          right: 20px;
+          width: 300px;
+          height: 400px;
+          background: blue;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+          z-index: 1000;
+        }
+
+        .chatbot-modal-header {
+          padding: 10px;
+          background: darkblue;
+          color: white;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+        }
+
+        .chatbot-modal-body {
+          padding: 10px;
+          height: calc(100% - 40px); /* Adjust based on header/footer height */
+          overflow-y: auto;
+          color: white;
+        }
+
+        .chatbot-close {
+          float: right;
+          cursor: pointer;
+        }
+
+        /* adding an image to the webpage */
+        .background-image {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover; /* Ensures the image covers the entire area */
+          z-index: -1; /* Moves the image behind other content */
+        }
+
+        /* Hide logout button by default */
+        .logout-btn {
+          display: none;
+        }
+        .login-btn {
+          display: none;
+        }
+        {% if user.is_authenticated %}
+        .logout-btn {
+          display: inline-block;
+        }
+        {% else %}
+        .login-btn {
+          display: inline-block;
+        }
+        {% endif %}
+        {% endblock %}
+    </style>
+  </head>
+  <body>
+    {% block content %}
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">Dream Estate</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarsExampleDefault"
+        aria-controls="navbarsExampleDefault"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'home1'%}"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'home1' %}">Home</a>
+          </li>
+          {% else %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'accounts:log_in' %}"
+              >Dashboard <span class="sr-only">(current)</span></a
+            >
+          </li>
+          {% endif %}
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'home1'%}"
+              >Realtor <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'home1'%}"
+              >Customer <span class="sr-only">(current)</span></a
+            >
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          {% csrf_token %}
+          <input
+            class="form-control mr-sm-2"
+            type="text"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button
+            class="btn btn-outline-success my-2 my-sm-0 m-2"
+            type="submit"
+          >
+            Search
+          </button>
+          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">
+            Chat with Us
+          </button>
+
+          <!--changes begin!-->
+          <div>
+            {% csrf_token %}
+            {% if user.is_authenticated %}
+            <a class="btn btn-danger ml-2" href="{% url 'logout'%}"
+            >Log out<span class="sr-only">(current)</span></a
+            >
+            {% else %}
+            <a class="btn btn-primary ml-2" href="{% url 'page'%}"
+            >Log in<span class="sr-only">(current)</span></a
+            >
+            {% endif %} 
+          </div>
+
+        </form>
+      </div>
+    </nav>
+    
+    {% endblock %}
+    <!--changes begin!-->
+    {% for message in messages %}
+
+    <div class = "alert aleat-{{message.tags}} alert-dismissible fade show" role = "alert">
+      <strong>Message: </strong>{{message}}
+      <button type = "button" class = "close", data-dismiss = "alert" aria-label = "Close">
+    </div>
+
+    {% endfor %}
+    <span aria-hidden = "true"> &times;</span>
+      <h1>Welcome to Your Dream House</h1>
+    </div>
+    <!--changes end!-->
+    
+    <main role="main">
+  
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+              {{ message }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      
+
+      <!-- Chatbot icon -->
+
+      <div class="chatbot-icon" onclick="toggleChatbot()">Open</div>
+
+      <!-- Chatbot modal -->
+      <div class="chatbot-modal" id="chatbotModal">
+        <div class="chatbot-modal-header">
+          <span>Chatbot</span>
+          <span class="chatbot-close" onclick="toggleChatbot()">×</span>
+        </div>
+        <div class="chatbot-modal-body" id="chat-history"></div>
+        <input type="text" id="user-input" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </main>
+
+    {% block extra_js %}
+    <script>
+      function toggleChatbot() {
+        var chatbotModal = document.getElementById("chatbotModal");
+        if (
+          chatbotModal.style.display === "none" ||
+          chatbotModal.style.display === ""
+        ) {
+          chatbotModal.style.display = "block";
+        } else {
+          chatbotModal.style.display = "none";
+        }
+      }
+      function appendMessage(message) {
+        var chatHistory = document.getElementById("chat-history");
+        chatHistory.innerHTML += '<div class="message">' + message + "</div>";
+      }
+
+      function sendMessage() {
+        var userInput = document.getElementById("user-input").value;
+        appendMessage("You: " + userInput);
+        document.getElementById("user-input").value = ""; // Clear input field
+
+        // Send message to backend
+        fetch("/get", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ msg: userInput }),
+        })
+          .then((response) => response.text())
+          .then((data) => {
+            appendMessage("Bot: " + data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      //logout button configuration
+      <script>
+        $(document).ready(function() {
+          $('.logout-btn').click(function() {
+              $(this).hide();
+              $('.login-btn').show();
+          });
+        });
+    </script>
+    {% endblock %}
+  </body>
+</html>
