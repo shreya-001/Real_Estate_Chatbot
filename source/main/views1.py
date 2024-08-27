@@ -22,8 +22,6 @@ from Utils.response_main import predict
 # # Set up logging
 # logger = logging.getLogger(__name__)
 
-
-
 class IndexPageView(TemplateView):
     template_name = 'main/home1.html'
 
